@@ -5,12 +5,10 @@
 =end
 
 class Triangle
-  attr_reader :base, :height
-
   def initialize
-    puts "What is triangle base?"
+    puts 'What is triangle base?'
     @base = gets.chomp.to_f
-    puts "What is triangle height?"
+    puts 'What is triangle height?'
     @height = gets.chomp.to_f
   end
 
