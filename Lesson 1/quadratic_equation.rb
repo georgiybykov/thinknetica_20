@@ -29,11 +29,11 @@ class QuadraticEquation
   end
 
   def x1
-    @x1 = -@b + Math.sqrt(@d)/2.0 * @a
+    @x1 = -@b + Math.sqrt(@d) / 2.0 * @a
   end
 
   def x2
-    @x2 = -@b - Math.sqrt(@d)/2.0 * @a
+    @x2 = -@b - Math.sqrt(@d) / 2.0 * @a
   end
 end
 
