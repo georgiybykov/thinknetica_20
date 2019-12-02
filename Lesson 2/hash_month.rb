@@ -19,4 +19,4 @@ hash_month = {
   december: 31
 }
 
-hash_month.each { |m, d| puts "#{m}" if d == 30 }
+hash_month.each { |month, day| puts "#{month}" if day == 30 }

@@ -13,7 +13,21 @@ if (day > 31) || (month > 12) || (year < 1)
   abort "Try again later! Wrong arguments!"
 end
 
-hash_month = { january: 31, february: 28, march: 31, april: 30, may: 31, june: 30, july: 31, august: 31, september: 30, october: 31, november: 30, december: 31 }
+hash_month = {
+  january: 31,
+  february: 28,
+  march: 31,
+  april: 30,
+  may: 31,
+  june: 30,
+  july: 31,
+  august: 31,
+  september: 30,
+  october: 31,
+  november: 30,
+  december: 31
+}
+
 hash_month[:february] = 29 if (year % 4 == 0) || (year % 400 == 0) && (year % 100 != 0)
 
 days_array = hash_month.values.take(month - 1)

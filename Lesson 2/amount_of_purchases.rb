@@ -5,15 +5,15 @@
 2) Вычислить и вывести на экран итоговую сумму всех покупок в "корзине".
 =end
 
-cart = Hash.new
+cart = {}
 
 loop do
-  puts "Type title of the product (or 'stop' to interrupt product input): "
+  puts 'Type title of the product (or "stop" to interrupt product input): '
   title = gets.chomp
   break if title == "stop"
-  puts "Type product price: "
+  puts 'Type product price: '
   price = gets.chomp.to_f
-  puts "Type product amount: "
+  puts 'Type product amount: '
   amount = gets.chomp.to_f
   cart[title] = { "price" => price, "amount" => amount }
 end

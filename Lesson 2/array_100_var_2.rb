@@ -3,12 +3,10 @@
 =end
 
 array = (10..100).to_a
-array2 = []
+result_array = []
 
 array.each do |a|
-  if a % 5 == 0
-    array2.push(a)
-  end
+  result_array.push(a) if a % 5 == 0
 end
 
-puts array2
+puts result_array
