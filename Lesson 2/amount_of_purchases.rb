@@ -23,7 +23,6 @@ cart.each { |title, total| total_cart_price += total["price"] * total["amount"] 
 
 puts cart
 
-
 cart.each do |title, total_amount|
   amount_of_product = total_amount["price"] * total_amount["amount"]
   puts "For #{title} total amount is #{amount_of_product}"
