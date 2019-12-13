@@ -1,6 +1,6 @@
 class Station
 
-  attr_reader :name, :trains
+  attr_reader :trains
 
   def initialize(name)
     @name = name
@@ -13,118 +13,92 @@ class Station
 
   def send_train(train)
     @trains.delete(train)
-    train.station = nil
   end
 
-  def show_trains(type = nil)
-    if type
-      trains.each { |train| train.number_of_train if train.type == type }
-    else
-      trains.each { |train| train.number_of_train }
-    end
+  def show_trains_by_type(type)
+    @trains.select { |train| train if train.type == type }
   end
 end
 
 class Route
 
-  attr_accessor :stations, :first_station, :last_station
+  attr_reader :stations
 
   def initialize(first_station, last_station)
     @stations = [first_station, last_station]
   end
 
   def add_station(station)
-    self.stations.insert(-2, station)
+    self.stations.insert(-2, station) unless @stations.include?(station)
   end
 
-  def remove_station(station)  # переписать метод
-    if [@stations.first, @stations.last].include?(station)
-      return
-    elsif @stations.include?(station)
-      @stations.delete(station)
-    else
-      return
-    end
+  def remove_station(station)
+    return if [@stations.first, @stations.last].include?(station)
+    @stations.delete(station)
   end
 end
 
 class Train
 
-  attr_accessor :number_of_train, :amount_of_railcars, :speed, :route, :station
-  attr_reader :type
+  attr_reader :type, :speed
 
-  def initialize(number_of_train, type, amount_of_railcars, speed = 0)
+  def initialize(number_of_train, type, amount_of_railcars)
     @number_of_train = number_of_train
     @type = type
     @amount_of_railcars = amount_of_railcars
-    @speed = speed
+    @speed = 0
   end
 
   def go(speed)
-    speed += 1
+    @speed += speed
   end
 
   def stop
-    self.speed = 0
+    @speed = 0
   end
 
   def add_railcar
-    amount_of_railcars += 1 if !speed.zero?
+    @amount_of_railcars += 1 if !@speed.zero?
   end
 
   def remove_railcar
-    amount_of_railcars -= 1 if !speed.zero? && amount_of_railcars > 0
+    @amount_of_railcars -= 1 if !@speed.zero? && @amount_of_railcars > 0
   end
 
   def take_route(route)
     @route = route # route = Route.new
-    @current_station = @route.stations.first # @route.stations.first.get_train(self)  ?????
+    @route.stations.first.get_train(self)
+    @station_index = 0
   end
-
-  def go_to(station)
-    if route.nil?
-      puts 'The train has to have the route.' # return  ???
-    elsif @current_station == station
-      puts "The train is on the #{@current_station} right now." # return  ???
-    elsif @route.stations.include?(station)
-      @station.send_train(self) if @station
-      @station = station
-      station.get_train(self)
-    else
-      puts "There is no #{station} on the route for the train №#{@number_of_train}." # return  ???
-    end
-  end
-
-=begin
-  def show_stations_list
-    if route.nil?
-      puts 'The route is not set.'
-    else
-      station_index = @route.stations.index(@current_station)
-      puts "The train №#{@number_of_train} is located at the station #{@current_station.name} right now."
-      puts "The previous station is #{@route.stations[station_index - 1].name}." if station_index != 0
-      puts "The next station is #{@route.stations[station_index + 1].name}." if station_index != @route.stations.size - 1
-    end
-  end
-=end
 
   def current_station
-    # заменить инстанс-переменную @current_station этим методом
+    @route.stations[@station_index]
   end
 
   def next_station
-
+    return if @station_index == @route.stations.size - 1
+    @route.stations[@station_index + 1]
   end
 
   def previous_station
+    return if @station_index == 0
+    @route.stations[@station_index - 1]
+  end
 
+  def go_one_station_forward
+    return unless next_station
+    @route.stations[@station_index].send_train(self)
+    @route.stations[@station_index + 1].get_train(self)
+  end
+
+  def go_one_station_back
+    return unless previous_station
+    @route.stations[@station_index].send_train(self)
+    @route.stations[@station_index - 1].get_train(self)
   end
 end
 
 
-
-
-=begin
 station_spb = Station.new("Saint-Petersburg")
 station_msk = Station.new("Moscow")
 station_blg = Station.new("Bologoe")
@@ -136,9 +110,9 @@ route_spb_msk = Route.new(station_spb, station_msk)
 route_spb_msk.add_station(station_blg)
 route_spb_msk.add_station(station_kpv)
 route_spb_msk.add_station(station_rd)
-route_spb_msk.show_stations
+route_spb_msk.stations
 route_spb_msk.remove_station(station_rd)
-route_spb_msk.show_stations
+route_spb_msk.stations
 
 train1 = Train.new(1, "Passenger car", 15)
 train2 = Train.new(2, "Freight car", 25)
@@ -146,30 +120,30 @@ train3 = Train.new(3, "Passenger car", 17)
 train4 = Train.new(4, "Freight car", 32)
 
 train1.take_route(route_spb_msk)
-train1.go_to(station_blg)
+train1.go_one_station_forward
+train1.current_station
+train1.next_station
+train1.previous_station
 
-station_spb.get_train(train1)
+station_spb.send_train(train1)
+station_blg.get_train(train1)
 
-station_spb.show_trains
+puts station_blg.trains
 
-train1.go_to(station_msk)
-train1.go_to(station_kpv)
+train1.go_one_station_forward
+train1.go_one_station_back
 
 station_rd.get_train(train2)
 station_kpv.send_train(train3)
 station_krd.get_train(train4)
 
-station_spb.show_trains("Passenger car")
-station_spb.show_trains("Freight car")
+puts station_blg.show_trains_by_type("Passenger car")
+puts station_spb.show_trains_by_type("Freight car")
 
-train1.show_stations_list
-train2.show_stations_list
-
-train1.add_remove_railcars(1)
-train2.add_remove_railcars(-1)
-train1.go
+train1.add_railcar
+train2.remove_railcar
+train1.go(70)
 puts train1.speed
-train1.add_remove_railcars(1)
+train1.add_railcar
 train1.stop
 puts train1.speed
-=end
