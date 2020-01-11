@@ -1,4 +1,5 @@
 class Station
+  attr_reader :trains
 
   def initialize(name)
     @name = name
@@ -13,11 +14,6 @@ class Station
     @trains.delete(train)
   end
 
-  private
-
-  attr_reader :trains
-
-  # этот метод используется только внутри класса
   def show_trains_by_type(type)
     @trains.select { |train| train if train.type == type }
   end

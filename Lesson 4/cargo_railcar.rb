@@ -1,6 +1,6 @@
 require_relative 'railcar'
 
-class CargoCar < Railcar
+class CargoCar < RailCar
   def initialize
     @type = 'cargo'
   end
