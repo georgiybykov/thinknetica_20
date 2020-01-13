@@ -1,6 +1,6 @@
 class Train
 
-  attr_reader :type, :railcars
+  attr_reader :number_of_train, :type, :railcars, :speed
 
   def initialize(number_of_train, type)
     @number_of_train = number_of_train
@@ -9,11 +9,6 @@ class Train
     @speed = 0
   end
 
-  protected
-
-  attr_reader :speed
-
-  # все методы ниже используются только в данном классе и его подклассах
   def go(speed)
     @speed += speed
   end
