@@ -21,11 +21,12 @@ class Main
     exit: 0,
     create_new_station: 1,
     create_new_train: 2,
-    hook_the_railcar_to_the_train: 3,
-    unhook_the_railcar_from_the_train: 4,
-    send_the_train_to_the_station: 5,
-    show_the_list_of_the_stations: 6,
-    show_the_list_of_the_trains_for_the_station: 7
+    create_a_route: 3,
+    hook_the_railcar_to_the_train: 4,
+    unhook_the_railcar_from_the_train: 5,
+    send_the_train_to_the_station: 6,
+    show_the_list_of_the_stations: 7,
+    show_the_list_of_the_trains_for_the_station: 8
   }
 
   def start
@@ -33,11 +34,12 @@ class Main
       0. Exit
       1. Create new station
       2. Create new train
-      3. Hook the railcar to the train
-      4. Unhook the railcar from the train
-      5. Send the train to the station
-      6. Show the list of the stations
-      7. Show the list of the trains for the station
+      3. Create a route
+      4. Hook the railcar to the train
+      5. Unhook the railcar from the train
+      6. Send the train to the station
+      7. Show the list of the stations
+      8. Show the list of the trains for the station
     )
 
     loop do
@@ -52,6 +54,8 @@ class Main
         create_new_station
       when ACTIONS[:create_new_train]
         create_new_train
+      when ACTIONS[:create_a_route]
+        create_a_route
       when ACTIONS[:hook_the_railcar_to_the_train]
         hook_the_railcar_to_the_train
       when ACTIONS[:unhook_the_railcar_from_the_train]
@@ -90,6 +94,78 @@ class Main
     else
       puts 'The train has not been created. You had to type 1 or 2 to make a choice.'
     end
+  end
+
+  def create_a_route
+    puts 'Type number for: 1 - Create new route; 2 - Add station to the route; 3 - Remove station from the route'
+    choice = gets.chomp.to_i
+    case choice
+    when 1
+      create_new_route
+    when 2
+      add_station_to_the_route
+    when 3
+      remove_station_from_the_route
+    end
+  end
+
+  def create_new_route
+    if @stations.count < 2
+      puts 'You have to create 2 stations at least to create new route.'
+      return
+    end
+    puts 'Choose station from the list to set it first station of the route: '
+    @stations.each_with_index { |station, number| puts "#{number.succ}. #{station.name}" }
+    print 'Type the number of the station: '
+    first_station = last_station = @stations[gets.chomp.to_i]
+    loop do
+      puts 'Choose station from the list to set it last station of the route: '
+      @stations.each_with_index { |station, number| puts "#{number.succ}. #{station.name}" }
+      print 'Type the number of the station: '
+      last_station = @stations[gets.chomp.to_i]
+      if first_station == last_station
+        puts 'This station already exists in the route.'
+      else
+        break
+      end
+    end
+    @routes << Route.new(first_station, last_station)
+    puts "The route has been created."
+  end
+
+  def add_station_to_the_route(route = nil)
+    if route.nil?
+      puts 'Type the number of route from available: '
+      @routes.each_with_index { |route, number| puts "#{number.succ}. #{route.name}" }
+      route = @routes[gets.chomp.to_i]
+    end
+
+
+    puts "The route #{route.name}. The list of the stations: "
+    @stations.each_with_index { |station, number| puts "#{number.succ}. #{station.name}" }
+    print 'Type the number of the station: '
+    new_station = @stations[gets.chomp.to_i]
+    puts new_station.name
+    return if new_station.nil?
+
+    route.add_station(new_station)
+    puts route.stations.map(&:name).join(' - ')
+  end
+
+  def remove_station_from_the_route
+    puts 'The list of the routes: '
+    @routes.each_with_index { |route, number| puts "#{number.succ}. #{route}" }
+    print 'Type the number of the route: '
+    route = @routes[gets.chomp.to_i]
+    return if route.nil?
+
+    route.name
+    puts 'The list of the stations of the route: '
+    route.stations.each_with_index { |station, number| puts "#{number.succ}. #{station.name}" }
+    print 'Type the number of the station to delete it from the route: '
+    station = route.stations[gets.chomp.to_i]
+    route.remove_station(station)
+    puts "The station #{station} was deleted from the route."
   end
 
   def hook_the_railcar_to_the_train
