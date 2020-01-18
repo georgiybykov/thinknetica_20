@@ -14,8 +14,4 @@ class Route
     return if [@stations.first, @stations.last].include?(station)
     @stations.delete(station)
   end
-
-  def name
-    "#{@stations.first.name} - #{@stations.last.name}"
-  end
 end

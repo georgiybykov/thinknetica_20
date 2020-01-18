@@ -140,7 +140,6 @@ class Main
       route = @routes[gets.chomp.to_i]
     end
 
-
     puts "The route #{route.name}. The list of the stations: "
     @stations.each_with_index { |station, number| puts "#{number.succ}. #{station.name}" }
     print 'Type the number of the station: '
