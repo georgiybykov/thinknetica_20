@@ -22,11 +22,12 @@ class Main
     create_new_station: 1,
     create_new_train: 2,
     create_a_route: 3,
-    hook_the_railcar_to_the_train: 4,
-    unhook_the_railcar_from_the_train: 5,
-    send_the_train_to_the_station: 6,
-    show_the_list_of_the_stations: 7,
-    show_the_list_of_the_trains_for_the_station: 8
+    set_train_route: 4,
+    hook_the_railcar_to_the_train: 5,
+    unhook_the_railcar_from_the_train: 6,
+    send_the_train_to_the_station: 7,
+    show_the_list_of_the_stations: 8,
+    show_the_list_of_the_trains_for_the_station: 9
   }
 
   def start
@@ -35,11 +36,12 @@ class Main
       1. Create new station
       2. Create new train
       3. Create a route
-      4. Hook the railcar to the train
-      5. Unhook the railcar from the train
-      6. Send the train to the station
-      7. Show the list of the stations
-      8. Show the list of the trains for the station
+      4. Set train route
+      5. Hook the railcar to the train
+      6. Unhook the railcar from the train
+      7. Send the train to the station
+      8. Show the list of the stations
+      9. Show the list of the trains for the station
     )
 
     loop do
@@ -56,6 +58,8 @@ class Main
         create_new_train
       when ACTIONS[:create_a_route]
         create_a_route
+      when ACTIONS[:set_train_route]
+        set_train_route
       when ACTIONS[:hook_the_railcar_to_the_train]
         hook_the_railcar_to_the_train
       when ACTIONS[:unhook_the_railcar_from_the_train]
@@ -117,20 +121,20 @@ class Main
     puts 'Choose station from the list to set it first station of the route: '
     @stations.each_with_index { |station, number| puts "#{number.succ}. #{station.name}" }
     print 'Type the number of the station: '
-    first_station = last_station = @stations[gets.chomp.to_i]
+    last_station = first_station = @stations[gets.chomp.to_i]
     loop do
       puts 'Choose station from the list to set it last station of the route: '
       @stations.each_with_index { |station, number| puts "#{number.succ}. #{station.name}" }
       print 'Type the number of the station: '
       last_station = @stations[gets.chomp.to_i]
-      if first_station == last_station
+      if last_station == first_station
         puts 'This station already exists in the route.'
       else
         break
       end
     end
     @routes << Route.new(first_station, last_station)
-    puts "The route has been created."
+    puts "The route #{@routes.last.name} has been created."
   end
 
   def add_station_to_the_route(route = nil)
@@ -165,6 +169,26 @@ class Main
     station = route.stations[gets.chomp.to_i]
     route.remove_station(station)
     puts "The station #{station} was deleted from the route."
+  end
+
+  def set_train_route
+    if @trains.nil?
+      puts 'There are no trains available.'
+      return
+    end
+    puts 'Type the number of the train to set train route. The list of available trains: '
+    @trains.each_with_index { |train, number| puts "#{number.succ}. #{train.number_of_train}" }
+    train = @trains[gets.chomp.to_i]
+    puts "You have chosen the train #{train}."
+    if @routes.nil?
+      puts 'There are no available routes.'
+      return
+    end
+    puts 'Type the number of the route. The list of available routes: '
+    @routes.each_with_index { |route, number| puts "#{number.succ}. #{route.name}" }
+    route = @routes[gets.chomp.to_i]
+    train.take_route(route)
+    puts 'The route has been set.'
   end
 
   def hook_the_railcar_to_the_train
