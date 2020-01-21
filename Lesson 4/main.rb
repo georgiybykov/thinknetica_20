@@ -8,7 +8,7 @@ require_relative 'railcar'
 require_relative 'passenger_railcar'
 require_relative 'cargo_railcar'
 
-class Main
+class RailRoad
 
   def initialize
     @stations = []
@@ -79,6 +79,10 @@ class Main
       end
     end
   end
+
+  private
+
+  # методы ниже вызываются только в классе RailRoad
 
   def create_new_station
     puts 'Create new station'
@@ -312,4 +316,4 @@ class Main
   end
 end
 
-Main.new.start
+RailRoad.new.start
