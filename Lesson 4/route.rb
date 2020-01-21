@@ -1,3 +1,5 @@
+require_relative 'station'
+
 class Route
 
   attr_reader :stations
@@ -16,6 +18,6 @@ class Route
   end
 
   def name
-    "#{@stations.first} - #{@stations.last}"
+    "#{@stations.first.name} - #{@stations.last.name}"
   end
 end

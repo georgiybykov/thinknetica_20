@@ -1,6 +1,6 @@
 class Train
 
-  attr_reader :number_of_train, :type, :railcars, :speed
+  attr_reader :number_of_train, :type, :railcars, :speed, :route
 
   def initialize(number_of_train, type)
     @number_of_train = number_of_train
@@ -32,6 +32,22 @@ class Train
     @station_index = 0
   end
 
+  def go_one_station_forward
+    return unless next_station
+    @route.stations[@station_index].send_train(self)
+    @route.stations[@station_index + 1].get_train(self)
+  end
+
+  def go_one_station_back
+    return unless previous_station
+    @route.stations[@station_index].send_train(self)
+    @route.stations[@station_index - 1].get_train(self)
+  end
+
+  protected
+
+  # методы ниже не вызываются из интерфейса, но находятся в родительском классе и вызываются в дочерних классах
+
   def current_station
     return if @route.nil?
     @route.stations[@station_index]
@@ -45,17 +61,5 @@ class Train
   def previous_station
     return if @station_index == 0
     @route.stations[@station_index - 1]
-  end
-
-  def go_one_station_forward
-    return unless next_station
-    @route.stations[@station_index].send_train(self)
-    @route.stations[@station_index + 1].get_train(self)
-  end
-
-  def go_one_station_back
-    return unless previous_station
-    @route.stations[@station_index].send_train(self)
-    @route.stations[@station_index - 1].get_train(self)
   end
 end
