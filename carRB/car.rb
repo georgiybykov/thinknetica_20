@@ -1,4 +1,44 @@
+module FuelTank
+  def fill_tank(level)
+    self.fuel_tank = level
+  end
+
+  def fuel_level
+    self.fuel_tank
+  end
+
+  protected
+
+  attr_accessor :fuel_tank
+end
+
+module Debugger
+  def self.included(base)
+    base.extend ClassMethods
+    base.send :include, InstanceMethods
+  end
+
+  module ClassMethods
+    def debug(log)
+      puts "!!!DEBUG: #{log} !!!"
+    end
+  end
+
+  module InstanceMethods
+    def debug(log)
+      self.class.debug(log)
+    end
+
+    def print_class
+      puts self.class
+    end
+  end
+end
+
 class Car
+
+  include FuelTank
+  include Debugger
 
   attr_reader :current_rpm
 
@@ -8,16 +48,12 @@ class Car
     @@instances
   end
 
-  def self.debug(log)
-    puts "!!!DEBUG: #{log} !!!"
-  end
-
-  debug 'Start interface'
+  debug 'Start interface' # вызывается как метод-класса, который подключен из Debugger::ClassMethods
 
   def initialize
     @current_rpm = 0
     @@instances += 1
-    self.class.debug 'Initialize'
+    debug 'Initialize' # это инстанс-метод, который подключается из Debugger::InstanceMethods
   end
 
   def start_engine
@@ -43,4 +79,12 @@ class Car
   end
 
   # остановить двигатель
+end
+
+class MotorBike
+
+  include FuelTank
+  include Debugger
+
+  debug 'MotorBike class'
 end
