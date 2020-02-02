@@ -12,7 +12,7 @@ module FuelTank
   attr_accessor :fuel_tank
 end
 
-module Debugger
+module Debugger # == Debugger = Module.new do ... end
   def self.included(base)
     base.extend ClassMethods
     base.send :include, InstanceMethods
@@ -35,7 +35,7 @@ module Debugger
   end
 end
 
-class Car
+class Car # == Car = Class.new do ... end
 
   include FuelTank
   include Debugger
