@@ -23,7 +23,7 @@ class Train
   end
 
   def remove_railcar(railcar)
-    @railcars.delete(railcar) if @speed.zero? && @type = railcar.type
+    @railcars.delete(railcar) if @speed.zero? && @type == railcar.type
   end
 
   def take_route(route)

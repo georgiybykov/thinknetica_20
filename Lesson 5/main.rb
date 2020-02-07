@@ -1,4 +1,6 @@
 require 'pry'
+require_relative 'manufacturer'
+require_relative 'instance_counter'
 require_relative 'station'
 require_relative 'route'
 require_relative 'train'
@@ -7,8 +9,6 @@ require_relative 'cargo_train'
 require_relative 'railcar'
 require_relative 'passenger_railcar'
 require_relative 'cargo_railcar'
-require_relative 'manufacturer'
-require_relative 'instance_counter'
 
 class RailRoad
 
@@ -194,9 +194,9 @@ class RailRoad
       return
     end
     puts 'Type the INDEX NUMBER of the train to set train route. The list of available trains: '
-    @trains.each_with_index { |train, number| puts "#{number}. #{train.number_of_train}" }
+    @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
     train = @trains[gets.chomp.to_i]
-    puts "You have chosen the train #{train.number_of_train}."
+    puts "You have chosen the train #{train.number}."
     if @routes.nil?
       puts 'There are no available routes.'
       return
@@ -214,9 +214,9 @@ class RailRoad
       puts 'You have to create a train first.'
     else
       puts 'What is the NUMBER of the train you would like to hook the railcar?'
-      @trains.each_with_index { |train, number| puts "#{number}. #{train.number_of_train}" }
+      @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
       number = gets.chomp
-      train = @trains.find { |train| train.number_of_train == number }
+      train = @trains.find { |train| train.number == number }
       if train.nil?
         puts 'The train with this number does not exist.'
       else
@@ -231,9 +231,9 @@ class RailRoad
       puts 'You have to create a train first.'
     else
       puts 'What is the NUMBER of the train you would like to unhook the railcar?'
-      @trains.each_with_index { |train, number| puts "#{number}. #{train.number_of_train}" }
+      @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
       number = gets.chomp
-      train = @trains.find { |train| train.number_of_train == number }
+      train = @trains.find { |train| train.number == number }
       if train.nil?
         puts 'The train with this number does not exist.'
       else
@@ -250,9 +250,9 @@ class RailRoad
       puts 'You have to create a station first.'
     else
       puts 'Type the NUMBER of the train you would like to get to the station: '
-      @trains.each_with_index { |train, number| puts "#{number}. #{train.number_of_train}" }
+      @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
       number = gets.chomp
-      train = @trains.find { |train| train.number_of_train == number }
+      train = @trains.find { |train| train.number == number }
       if train.nil?
         puts 'The train with this number does not exist.'
       else
@@ -264,7 +264,7 @@ class RailRoad
           puts 'The station with this name does not exist.'
         else
           station.get_train(train)
-          puts "The train #{train.number_of_train} has been sent to the station #{station.name}."
+          puts "The train #{train.number} has been sent to the station #{station.name}."
         end
       end
     end
@@ -273,23 +273,23 @@ class RailRoad
   def move_the_train_one_station_forward_or_back
     puts 'Move the train one station forward or back on the route'
     puts 'Choose the INDEX NUMBER of the train: '
-    @trains.each_with_index { |train, number| puts "#{number}. #{train.number_of_train}" }
+    @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
     train = @trains[gets.chomp.to_i]
     return if train.nil?
-    puts "You have chosen the train #{train.number_of_train}."
+    puts "You have chosen the train #{train.number}."
 
     if train.route.nil?
-      puts "The route had not been set for the train #{train.number_of_train}."
+      puts "The route had not been set for the train #{train.number}."
     else
       puts 'Type your choise: 1 - move the train one station forward; 2 - move the train one station back'
       choise = gets.chomp.to_i
       case choise
       when 1
         train.go_one_station_forward
-        puts "The train #{train.number_of_train} has gone to the next station."
+        puts "The train #{train.number} has gone to the next station."
       when 2
         train.go_one_station_back
-        puts "The train #{train.number_of_train} has gone to the previous station."
+        puts "The train #{train.number} has gone to the previous station."
       end
     end
   end

@@ -28,9 +28,9 @@ class Station
 
   def show_trains_by_type(type = nil)
     if type
-      @trains.each { |train| puts train.number_of_train if train.type == type }
+      @trains.each { |train| puts train.number if train.type == type }
     else
-      @trains.each { |train| puts train.number_of_train }
+      @trains.each { |train| puts train.number }
     end
   end
 end

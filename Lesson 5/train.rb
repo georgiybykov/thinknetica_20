@@ -6,21 +6,21 @@ class Train
   include Manufacturer
   include InstanceCounter
 
-  attr_reader :number_of_train, :type, :railcars, :speed, :route
+  attr_reader :number, :type, :railcars, :speed, :route
 
   @@trains = {}
 
-  def initialize(number_of_train, type)
-    @number_of_train = number_of_train
+  def initialize(number, type)
+    @number = number
     @type = type
     @railcars = []
     @speed = 0
-    @@trains[self.number_of_train] = self
+    @@trains[self.number] = self
     register_instance
   end
 
-  def self.find(number_of_train)
-    @@trains[number_of_train]
+  def self.find(number)
+    @@trains[number]
   end
 
   def go(speed)
@@ -37,7 +37,7 @@ class Train
   end
 
   def remove_railcar(railcar)
-    @railcars.delete(railcar) if @speed.zero? && @type = railcar.type
+    @railcars.delete(railcar) if @speed.zero? && @type == railcar.type
   end
 
   def take_route(route)
