@@ -41,6 +41,9 @@ class Car # == Car = Class.new do ... end
   include Debugger
 
   attr_reader :current_rpm
+  attr_accessor :number
+
+  NUMBER_FORMAT = /^[a-z]{1}\d{3}[a-z]{2}$/i
 
   @@instances = 0
 
@@ -50,10 +53,12 @@ class Car # == Car = Class.new do ... end
 
   debug 'Start interface' # вызывается как метод-класса, который подключен из Debugger::ClassMethods
 
-  def initialize
+  def initialize(number)
     @current_rpm = 0
     @@instances += 1
+    @number = number
     debug 'Initialize' # это инстанс-метод, который подключается из Debugger::InstanceMethods
+    validate!
   end
 
   def start_engine
@@ -64,11 +69,24 @@ class Car # == Car = Class.new do ... end
     current_rpm.zero?
   end
 
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
   debug 'End interface'
 
   protected
 
   attr_writer :current_rpm
+
+  def validate!
+    raise "Number can't be nil" if number.nil?
+    raise "Number should be at least 6 symbols" if number.length < 6
+    raise "Number has invalid format" if number !~ NUMBER_FORMAT
+  end
 
   def initial_rpm
     700
