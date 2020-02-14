@@ -42,10 +42,10 @@ class Car # == Car = Class.new do ... end
   include FuelTank
   include Debugger
 
+  NUMBER_FORMAT = /^[a-z]{1}\d{3}[a-z]{2}$/i
+
   attr_reader :current_rpm
   attr_accessor :number
-
-  NUMBER_FORMAT = /^[a-z]{1}\d{3}[a-z]{2}$/i
 
   @@instances = 0
 
