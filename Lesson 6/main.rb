@@ -1,6 +1,7 @@
 require 'pry'
 require_relative 'manufacturer'
 require_relative 'instance_counter'
+require_relative 'validate'
 require_relative 'station'
 require_relative 'route'
 require_relative 'train'
@@ -92,13 +93,16 @@ class RailRoad
     name = gets.chomp
     @stations << Station.new(name)
     puts "Station #{name} has been created."
+  rescue RuntimeError => e
+    puts e.message
+    retry
   end
 
   def create_new_train
     puts 'Create new train'
     puts 'What is the number of the train?'
     number = gets.chomp
-    print 'Type 1 for passenger railcar or 2 for cargo railcar: '
+    print 'Type 1 for passenger type of train or 2 for cargo type of train: '
     choice = gets.chomp.to_i
     case choice
     when 1
@@ -110,6 +114,9 @@ class RailRoad
     else
       puts 'The train has not been created. You had to type 1 or 2 to make a choice.'
     end
+  rescue RuntimeError => e
+    puts e.message
+    retry
   end
 
   def create_a_route
