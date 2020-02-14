@@ -154,7 +154,7 @@ class RailRoad
   def add_station_to_the_route(route = nil)
     puts 'Add station to the route'
     if route.nil?
-      puts 'Type the INDEX NUMBER of route from available: '
+      puts 'Type the INDEX NUMBER of the route from available: '
       @routes.each_with_index { |route, number| puts "#{number}. #{route.name}" }
       route = @routes[gets.chomp.to_i]
     end
@@ -181,7 +181,7 @@ class RailRoad
     route.name
     puts 'The list of the stations of the route: '
     route.stations.each_with_index { |station, number| puts "#{number}. #{station.name}" }
-    print 'Type the NUMBER of the station to delete it from the route: '
+    print 'Type the INDEX NUMBER of the station to delete it from the route: '
     station = route.stations[gets.chomp.to_i]
     route.remove_station(station)
     puts "The station #{station.name} was deleted from the route."
@@ -256,7 +256,7 @@ class RailRoad
       if train.nil?
         puts 'The train with this number does not exist.'
       else
-        puts 'What is the INDEX NUMBER of the station?'
+        puts 'What is the NAME of the station?'
         @stations.each_with_index { |station, number| puts "#{number}. #{station.name}" }
         name = gets.chomp
         station = @stations.find { |station| station.name == name }
@@ -304,7 +304,7 @@ class RailRoad
     if @stations.empty?
       puts 'You have to create a station first.'
     else
-      puts 'What is the INDEX NUMBER of the station?'
+      puts 'What is the NAME of the station?'
       @stations.each_with_index { |station, number| puts "#{number}. #{station.name}" }
       name = gets.chomp
       station = @stations.find { |station| station.name == name }
