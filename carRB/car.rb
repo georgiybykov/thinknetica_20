@@ -86,8 +86,8 @@ class Car # == Car = Class.new do ... end
 
   def validate!
     raise "Number can't be nil" if number.nil?
-    raise "Number should be at least 6 symbols" if number.length < 6
-    raise "Number has invalid format" if number !~ NUMBER_FORMAT
+    raise 'Number should be at least 6 symbols' if number.length < 6
+    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
   end
 
   def initial_rpm
