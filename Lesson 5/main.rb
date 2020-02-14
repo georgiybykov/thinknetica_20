@@ -97,16 +97,16 @@ class RailRoad
   def create_new_train
     puts 'Create new train'
     puts 'What is the number of the train?'
-    number_of_train = gets.chomp
+    number = gets.chomp
     print 'Type 1 for passenger railcar or 2 for cargo railcar: '
     choice = gets.chomp.to_i
     case choice
     when 1
-      @trains << PassengerTrain.new(number_of_train)
-      puts "Passenger train #{number_of_train} has been created."
+      @trains << PassengerTrain.new(number)
+      puts "Passenger train #{number} has been created."
     when 2
-      @trains << CargoTrain.new(number_of_train)
-      puts "Cargo train #{number_of_train} has been created."
+      @trains << CargoTrain.new(number)
+      puts "Cargo train #{number} has been created."
     else
       puts 'The train has not been created. You had to type 1 or 2 to make a choice.'
     end
@@ -134,12 +134,12 @@ class RailRoad
     end
     puts 'Choose station from the list to set it first station of the route: '
     @stations.each_with_index { |station, number| puts "#{number}. #{station.name}" }
-    print 'Type the NUMBER of the station: '
+    print 'Type the INDEX NUMBER of the station: '
     last_station = first_station = @stations[gets.chomp.to_i]
     loop do
       puts 'Choose station from the list to set it last station of the route: '
       @stations.each_with_index { |station, number| puts "#{number}. #{station.name}" }
-      print 'Type the NUMBER of the station: '
+      print 'Type the INDEX NUMBER of the station: '
       last_station = @stations[gets.chomp.to_i]
       if last_station == first_station
         puts 'This station already exists in the route.'
@@ -154,14 +154,14 @@ class RailRoad
   def add_station_to_the_route(route = nil)
     puts 'Add station to the route'
     if route.nil?
-      puts 'Type the NUMBER of route from available: '
+      puts 'Type the INDEX NUMBER of route from available: '
       @routes.each_with_index { |route, number| puts "#{number}. #{route.name}" }
       route = @routes[gets.chomp.to_i]
     end
 
     puts "The route #{route.name}. The list of the stations: "
     @stations.each_with_index { |station, number| puts "#{number}. #{station.name}" }
-    print 'Type the NUMBER of the station: '
+    print 'Type the INDEX NUMBER of the station: '
     new_station = @stations[gets.chomp.to_i]
     puts new_station.name
     return if new_station.nil?
@@ -174,7 +174,7 @@ class RailRoad
     puts 'Remove station from the route'
     puts 'The list of the routes: '
     @routes.each_with_index { |route, number| puts "#{number}. #{route.name}" }
-    print 'Type the NUMBER of the route: '
+    print 'Type the INDEX NUMBER of the route: '
     route = @routes[gets.chomp.to_i]
     return if route.nil?
 
@@ -201,7 +201,7 @@ class RailRoad
       puts 'There are no available routes.'
       return
     end
-    puts 'Type the NUMBER of the route. The list of available routes: '
+    puts 'Type the INDEX NUMBER of the route. The list of available routes: '
     @routes.each_with_index { |route, number| puts "#{number}. #{route.name}" }
     route = @routes[gets.chomp.to_i]
     train.take_route(route)
@@ -256,7 +256,7 @@ class RailRoad
       if train.nil?
         puts 'The train with this number does not exist.'
       else
-        puts 'What is the NAME of the station?'
+        puts 'What is the INDEX NUMBER of the station?'
         @stations.each_with_index { |station, number| puts "#{number}. #{station.name}" }
         name = gets.chomp
         station = @stations.find { |station| station.name == name }
@@ -304,7 +304,7 @@ class RailRoad
     if @stations.empty?
       puts 'You have to create a station first.'
     else
-      puts 'What is the NAME of the station?'
+      puts 'What is the INDEX NUMBER of the station?'
       @stations.each_with_index { |station, number| puts "#{number}. #{station.name}" }
       name = gets.chomp
       station = @stations.find { |station| station.name == name }
