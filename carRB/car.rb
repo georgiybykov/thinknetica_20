@@ -1,3 +1,5 @@
+require_relative 'modules'
+
 module FuelTank
   def fill_tank(level)
     self.fuel_tank = level
