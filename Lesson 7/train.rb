@@ -1,6 +1,7 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
 require_relative 'validate'
+require_relative 'station'
 
 class Train
 
@@ -53,25 +54,36 @@ class Train
   end
 
   def go_one_station_forward
-    return unless next_station
-    @route.stations[@station_index].send_train(self)
-    @route.stations[@station_index + 1].get_train(self)
+    return if next_station.nil?
+    #@route.stations[@station_index].send_train(self)
+    #@route.stations[@station_index + 1].get_train(self)
+    current_station.send_train(self)
+    next_station.get_train(self)
+    @station_index += 1
   end
 
   def go_one_station_back
-    return unless previous_station
-    @route.stations[@station_index].send_train(self)
-    @route.stations[@station_index - 1].get_train(self)
+    return if previous_station.nil?
+    #@route.stations[@station_index].send_train(self)
+    #@route.stations[@station_index - 1].get_train(self)
+    current_station.send_train(self)
+    previous_station.get_train(self)
+    @station_index -= 1
   end
-
-  protected
-
-  # методы ниже не вызываются из интерфейса, но находятся в родительском классе и вызываются в дочерних классах
 
   def current_station
     return if @route.nil?
     @route.stations[@station_index]
   end
+
+  def each_railcar
+    raise "There are no railcars for the train #{number}." if @railcars.empty?
+    @railcars.each { |railcar| yield(railcar) } if block_given?
+  end
+
+  protected
+
+  # методы ниже не вызываются из интерфейса, но находятся в родительском классе и вызываются в дочерних классах
 
   def next_station
     return if @station_index == @route.stations.size - 1

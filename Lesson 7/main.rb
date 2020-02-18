@@ -319,7 +319,7 @@ class RailRoad
         puts 'The station with this name does not exist.'
       else
         puts "The list of the trains for the station #{station.name}: "
-        station.show_trains_by_type
+        station.show_trains
       end
     end
   end

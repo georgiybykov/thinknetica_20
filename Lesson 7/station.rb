@@ -1,5 +1,6 @@
 require_relative 'instance_counter'
 require_relative 'validate'
+require_relative 'train'
 
 class Station
 
@@ -30,12 +31,13 @@ class Station
     @trains.delete(train)
   end
 
-  def show_trains_by_type(type = nil)
-    if type
-      @trains.each { |train| puts train.number if train.type == type }
-    else
-      @trains.each { |train| puts train.number }
-    end
+  def show_trains
+    @trains.each { |train| puts train.number }
+  end
+
+  def each_train(&block)
+    raise "There are no trains on the station #{name}." if @trains.empty?
+    @trains.each { |train| block.call(train) } if block_given?
   end
 
   protected
