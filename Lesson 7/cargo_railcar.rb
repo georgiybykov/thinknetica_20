@@ -1,6 +1,6 @@
 require_relative 'railcar'
 
-class CargoRailCar < RailCar
+class CargoRailcar < RailCar
 
   attr_reader :overall_volume, :booked_volume
 

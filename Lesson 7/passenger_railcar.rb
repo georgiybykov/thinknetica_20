@@ -1,6 +1,6 @@
 require_relative 'railcar'
 
-class PassengerRailCar < RailCar
+class PassengerRailcar < RailCar
 
   attr_reader :amount_of_places, :booked_places
 
@@ -12,7 +12,7 @@ class PassengerRailCar < RailCar
   end
 
   def take_a_place
-    return if vacant_places == 0
+    return if vacant_places < 1
 
     @booked_places += 1
   end

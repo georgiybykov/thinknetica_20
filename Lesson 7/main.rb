@@ -119,6 +119,82 @@ class RailRoad
     retry
   end
 
+  def hitch_on_railcar
+    puts 'Hitch on railcar to the train'
+    puts 'Type the INDEX NUMBER of the train. The list of available trains: '
+    @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
+    train = @trains[gets.chomp.to_i] || return
+    puts "You have chosen the train #{train.number}."
+
+    railcar = create_new_railcar_for(train) || raise('An error with creating the railcar')
+    train.add_railcar(railcar)
+    @railcars << railcar unless railcar.nil?
+    puts 'The railcar has been successfully added.'
+  rescue StandardError => e
+    puts e.message
+    retry
+  end
+
+  def hitch_off_railcar
+    puts 'Hitch off railcar from the train'
+    puts 'Type the INDEX NUMBER of the train. The list of available trains: '
+    @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
+    train = @trains[gets.chomp.to_i] || return
+    puts "You have chosen the train #{train.number}."
+
+    train.remove_railcar(train.railcars.last) if train.railcars.count.positive?
+  end
+
+  def railcar_load
+    puts 'Loading the railcar'
+
+    puts 'Type the INDEX NUMBER of the train. The list of available trains: '
+    @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
+    train = @trains[gets.chomp.to_i] || return
+    puts "You have chosen the train #{train.number}. The amount of railcars is: #{train.railcars.count}"
+
+    print 'Type here the number of railcar: '
+    railcar_number = gets.chomp.to_i - 1
+    train.railcars[railcar_number]
+
+    puts 'Type the volume you would like to load: '
+    volume = gets.chomp.to_i if railcar.type == 'cargo'
+
+    railcar.type == 'cargo' ? railcar.take_volume(volume) : railcar.take_a_place
+    puts 'Loading has been finished successfully.'
+    railcar_info(railcar)
+  rescue RuntimeError => e
+    puts e.message
+    retry
+  end
+
+  def railcar_info(railcar, _number = nil)
+    if railcar.type == 'cargo'
+      puts "Overall volume: #{railcar.overall_volume}."
+      puts "Booked volume: #{railcar.booked_volume}."
+      puts "Available volume: #{railcar.available_volume}."
+    else
+      puts "Amount of places: #{railcar.amount_of_places}."
+      puts "Booked of places: #{railcar.booked_places}."
+      puts "Vacant of places: #{railcar.vacant_places}."
+    end
+    puts('--' * 30)
+  end
+
+  def create_new_railcar_for(train)
+    puts 'Create new railcar'
+    case train.type
+    when 'cargo'
+      print 'Type railcar overall volume: '
+      railcar_volume = gets.chomp.to_i
+      CargoRailcar.new(railcar_volume)
+    when 'passenger'
+      print 'Type railcar amount of seats: '
+      amount_of_seats = gets.chomp.to_i
+      PassengerRailcar.new(amount_of_seats)
+    end
+  end
+
   def create_a_route
     puts 'Menu to create a route'
     puts 'Type number for: 1 - Create new route; 2 - Add station to the route; 3 - Remove station from the route'
