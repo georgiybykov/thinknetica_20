@@ -26,12 +26,14 @@ class RailRoad
     create_new_train: 2,
     create_a_route: 3,
     set_train_route: 4,
-    hook_the_railcar_to_the_train: 5,
-    unhook_the_railcar_from_the_train: 6,
-    send_the_train_to_the_station: 7,
-    move_the_train_one_station_forward_or_back: 8,
-    show_the_list_of_the_stations: 9,
-    show_the_list_of_the_trains_for_the_station: 10
+    hitch_on_railcar: 5,
+    hitch_off_railcar: 6,
+    railcar_load: 7,
+    send_the_train_to_the_station: 8,
+    move_the_train_one_station_forward_or_back: 9,
+    show_the_list_of_the_stations: 10,
+    show_the_list_of_the_trains_for_the_station: 11,
+    show_the_list_of_the_railcars_for_the_train: 12
   }
 
   def start
@@ -41,12 +43,14 @@ class RailRoad
       2. Create new train
       3. Create a route
       4. Set train route
-      5. Hook the railcar to the train
-      6. Unhook the railcar from the train
-      7. Send the train to the station
-      8. Move the train one station forward or back
-      9. Show the list of the stations
-      10. Show the list of the trains for the station
+      5. Hitch on the railcar to the train
+      6. Hitch off the railcar from the train
+      7. Load the railcar with passengers or take a volume for cargo trains
+      8. Send the train to the station
+      9. Move the train one station forward or back
+      10. Show the list of the stations
+      11. Show the list of the trains for the station
+      12. Show the list of the railcars for the train
     )
 
     loop do
@@ -65,10 +69,12 @@ class RailRoad
         create_a_route
       when ACTIONS[:set_train_route]
         set_train_route
-      when ACTIONS[:hook_the_railcar_to_the_train]
-        hook_the_railcar_to_the_train
-      when ACTIONS[:unhook_the_railcar_from_the_train]
-        unhook_the_railcar_from_the_train
+      when ACTIONS[:hitch_on_railcar]
+        hitch_on_railcar
+      when ACTIONS[:hitch_off_railcar]
+        hitch_off_railcar
+      when ACTIONS[:railcar_load]
+        railcar_load
       when ACTIONS[:send_the_train_to_the_station]
         send_the_train_to_the_station
       when ACTIONS[:move_the_train_one_station_forward_or_back]
@@ -77,6 +83,8 @@ class RailRoad
         show_the_list_of_the_stations
       when ACTIONS[:show_the_list_of_the_trains_for_the_station]
         show_the_list_of_the_trains_for_the_station
+      when ACTIONS[:show_the_list_of_the_railcars_for_the_train]
+        show_the_list_of_the_railcars_for_the_train
       else
         puts 'You have to choose one of the actions above.'
       end
@@ -121,10 +129,11 @@ class RailRoad
 
   def hitch_on_railcar
     puts 'Hitch on railcar to the train'
-    puts 'Type the INDEX NUMBER of the train. The list of available trains: '
+    puts 'Type the NUMBER of the train. The list of available trains: '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
-    train = @trains[gets.chomp.to_i] || return
-    puts "You have chosen the train #{train.number}."
+    train_number = gets.chomp.to_i
+    train = @trains[train_number.to_i]
+    #puts "You have chosen the train #{train.number}."
 
     railcar = create_new_railcar_for(train) || raise('An error with creating the railcar')
     train.add_railcar(railcar)
@@ -139,7 +148,7 @@ class RailRoad
     puts 'Hitch off railcar from the train'
     puts 'Type the INDEX NUMBER of the train. The list of available trains: '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
-    train = @trains[gets.chomp.to_i] || return
+    train = @trains[gets.chomp.to_i]
     puts "You have chosen the train #{train.number}."
 
     train.remove_railcar(train.railcars.last) if train.railcars.count.positive?
@@ -150,7 +159,7 @@ class RailRoad
 
     puts 'Type the INDEX NUMBER of the train. The list of available trains: '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
-    train = @trains[gets.chomp.to_i] || return
+    train = @trains[gets.chomp.to_i]
     puts "You have chosen the train #{train.number}. The amount of railcars is: #{train.railcars.count}"
 
     print 'Type here the number of railcar: '
@@ -158,7 +167,7 @@ class RailRoad
     train.railcars[railcar_number]
 
     puts 'Type the volume you would like to load: '
-    volume = gets.chomp.to_i if railcar.type == 'cargo'
+    volume = gets.chomp.to_i if train.railcars[railcar_number].type == 'cargo'
 
     railcar.type == 'cargo' ? railcar.take_volume(volume) : railcar.take_a_place
     puts 'Loading has been finished successfully.'
@@ -182,7 +191,6 @@ class RailRoad
   end
 
   def create_new_railcar_for(train)
-    puts 'Create new railcar'
     case train.type
     when 'cargo'
       print 'Type railcar overall volume: '
@@ -291,6 +299,7 @@ class RailRoad
     puts 'The route for the train has been set.'
   end
 
+=begin
   def hook_the_railcar_to_the_train
     puts 'Hook the railcar to the train'
     if @trains.empty?
@@ -324,6 +333,7 @@ class RailRoad
       end
     end
   end
+=end
 
   def send_the_train_to_the_station
     puts 'Send the train to the station'
@@ -391,13 +401,19 @@ class RailRoad
       @stations.each_with_index { |station, number| puts "#{number}. #{station.name}" }
       name = gets.chomp
       station = @stations.find { |station| station.name == name }
-      if station.nil?
-        puts 'The station with this name does not exist.'
-      else
-        puts "The list of the trains for the station #{station.name}: "
-        station.show_trains
-      end
+      puts "The list of the trains for the station #{station.name}: "
+      station.each_train { |train| puts train.number }
     end
+  end
+
+  def show_the_list_of_the_railcars_for_the_train
+    puts 'The list of the railcars for the train'
+    puts 'Type the INDEX NUMBER of the train. The list of available trains: '
+    @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
+    train = @trains[gets.chomp.to_i] || return
+    puts "You have chosen the train #{train.number}."
+    puts "The train #{train.number} has railcars: "
+    train.each_railcar { |railcar| puts railcar }
   end
 end
 

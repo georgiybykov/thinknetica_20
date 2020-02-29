@@ -2,6 +2,7 @@ require_relative 'manufacturer'
 require_relative 'instance_counter'
 require_relative 'validate'
 require_relative 'station'
+require_relative 'railcar'
 
 class Train
 
