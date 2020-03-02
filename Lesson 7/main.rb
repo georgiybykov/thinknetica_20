@@ -179,20 +179,20 @@ class RailRoad
 
     print 'Type here the number of railcar: '
     railcar_number = gets.chomp.to_i - 1
-    train.railcars[railcar_number]
+    loading_railcar = train.railcars[railcar_number]
 
     puts 'Type the volume you would like to load: '
     volume = gets.chomp.to_i if train.railcars[railcar_number].type == 'cargo'
 
-    train.railcars[railcar_number].type == 'cargo' ? train.railcars[railcar_number].take_volume(volume) : train.railcars[railcar_number].take_a_place
+    loading_railcar.type == 'cargo' ? loading_railcar.take_volume(volume) : loading_railcar.take_a_place
     puts 'Loading has been finished successfully.'
-    railcar_info(train.railcars[railcar_number])
+    railcar_info(loading_railcar)
   rescue RuntimeError => e
     puts e.message
     retry
   end
 
-  def railcar_info(railcar, _number = nil)
+  def railcar_info(railcar)
     puts('--' * 30)
     if railcar.type == 'cargo'
       puts "Overall volume: #{railcar.overall_volume}."
