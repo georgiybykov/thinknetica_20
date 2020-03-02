@@ -182,7 +182,7 @@ class RailRoad
     loading_railcar = train.railcars[railcar_number]
 
     puts 'Type the volume you would like to load: '
-    volume = gets.chomp.to_i if train.railcars[railcar_number].type == 'cargo'
+    volume = gets.chomp.to_i if loading_railcar.type == 'cargo'
 
     loading_railcar.type == 'cargo' ? loading_railcar.take_volume(volume) : loading_railcar.take_a_place
     puts 'Loading has been finished successfully.'
