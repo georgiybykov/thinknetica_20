@@ -129,11 +129,11 @@ class RailRoad
 
   def hitch_on_railcar
     puts 'Hitch on railcar to the train'
-    puts 'Type the NUMBER of the train. The list of available trains: '
+    puts 'What is the NUMBER of the train you would like to hitch the railcar on? '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
-    train_number = gets.chomp.to_i
-    train = @trains[train_number.to_i]
-    #puts "You have chosen the train #{train.number}."
+    number = gets.chomp
+    train = @trains.find { |train| train.number == number } || return
+    puts "You have chosen the train #{train.number}."
 
     railcar = create_new_railcar_for(train) || raise('An error with creating the railcar')
     train.add_railcar(railcar)
@@ -144,11 +144,25 @@ class RailRoad
     retry
   end
 
+  def create_new_railcar_for(train)
+    case train.type
+    when 'cargo'
+      print 'Type railcar overall volume: '
+      railcar_volume = gets.chomp.to_i
+      CargoRailcar.new(railcar_volume)
+    when 'passenger'
+      print 'Type railcar amount of seats: '
+      amount_of_seats = gets.chomp.to_i
+      PassengerRailcar.new(amount_of_seats)
+    end
+  end
+
   def hitch_off_railcar
     puts 'Hitch off railcar from the train'
-    puts 'Type the INDEX NUMBER of the train. The list of available trains: '
+    puts 'Type the NUMBER of the train. The list of available trains: '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
-    train = @trains[gets.chomp.to_i]
+    number = gets.chomp
+    train = @trains.find { |train| train.number == number } || return
     puts "You have chosen the train #{train.number}."
 
     train.remove_railcar(train.railcars.last) if train.railcars.count.positive?
@@ -157,9 +171,10 @@ class RailRoad
   def railcar_load
     puts 'Loading the railcar'
 
-    puts 'Type the INDEX NUMBER of the train. The list of available trains: '
+    puts 'Type the NUMBER of the train. The list of available trains: '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
-    train = @trains[gets.chomp.to_i]
+    number = gets.chomp
+    train = @trains.find { |train| train.number == number } || return
     puts "You have chosen the train #{train.number}. The amount of railcars is: #{train.railcars.count}"
 
     print 'Type here the number of railcar: '
@@ -169,15 +184,16 @@ class RailRoad
     puts 'Type the volume you would like to load: '
     volume = gets.chomp.to_i if train.railcars[railcar_number].type == 'cargo'
 
-    railcar.type == 'cargo' ? railcar.take_volume(volume) : railcar.take_a_place
+    train.railcars[railcar_number].type == 'cargo' ? train.railcars[railcar_number].take_volume(volume) : train.railcars[railcar_number].take_a_place
     puts 'Loading has been finished successfully.'
-    railcar_info(railcar)
+    railcar_info(train.railcars[railcar_number])
   rescue RuntimeError => e
     puts e.message
     retry
   end
 
   def railcar_info(railcar, _number = nil)
+    puts('--' * 30)
     if railcar.type == 'cargo'
       puts "Overall volume: #{railcar.overall_volume}."
       puts "Booked volume: #{railcar.booked_volume}."
@@ -299,42 +315,6 @@ class RailRoad
     puts 'The route for the train has been set.'
   end
 
-=begin
-  def hook_the_railcar_to_the_train
-    puts 'Hook the railcar to the train'
-    if @trains.empty?
-      puts 'You have to create a train first.'
-    else
-      puts 'What is the NUMBER of the train you would like to hook the railcar?'
-      @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
-      number = gets.chomp
-      train = @trains.find { |train| train.number == number }
-      if train.nil?
-        puts 'The train with this number does not exist.'
-      else
-        train.add_railcar(RailCar.new(train.type))
-      end
-    end
-  end
-
-  def unhook_the_railcar_from_the_train
-    puts 'Unhook the railcar from the train'
-    if @trains.empty?
-      puts 'You have to create a train first.'
-    else
-      puts 'What is the NUMBER of the train you would like to unhook the railcar?'
-      @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
-      number = gets.chomp
-      train = @trains.find { |train| train.number == number }
-      if train.nil?
-        puts 'The train with this number does not exist.'
-      else
-        train.remove_railcar(train.railcars.last)
-      end
-    end
-  end
-=end
-
   def send_the_train_to_the_station
     puts 'Send the train to the station'
     if @trains.empty?
@@ -408,12 +388,13 @@ class RailRoad
 
   def show_the_list_of_the_railcars_for_the_train
     puts 'The list of the railcars for the train'
-    puts 'Type the INDEX NUMBER of the train. The list of available trains: '
+    puts 'Type the NUMBER of the train. The list of available trains: '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
-    train = @trains[gets.chomp.to_i] || return
+    number = gets.chomp
+    train = @trains.find { |train| train.number == number } || return
     puts "You have chosen the train #{train.number}."
     puts "The train #{train.number} has railcars: "
-    train.each_railcar { |railcar| puts railcar }
+    train.each_railcar { |railcar| puts railcar.info }
   end
 end
 

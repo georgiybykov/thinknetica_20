@@ -11,7 +11,7 @@ class CargoRailcar < RailCar
     validate!
   end
 
-  def take_a_volume(volume)
+  def take_volume(volume)
     return if volume > @overall_volume
 
     @booked_volume += volume if available_volume >= volume

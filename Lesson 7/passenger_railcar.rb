@@ -5,7 +5,7 @@ class PassengerRailcar < RailCar
   attr_reader :amount_of_places, :booked_places
 
   def initialize(amount_of_places = 36)
-    @type = 'pessanger'
+    @type = 'passenger'
     @amount_of_places = amount_of_places
     @booked_places = 0
     validate!

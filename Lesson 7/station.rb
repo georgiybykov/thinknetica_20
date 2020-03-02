@@ -31,10 +31,6 @@ class Station
     @trains.delete(train)
   end
 
-  def show_trains
-    @trains.each { |train| puts train.number }
-  end
-
   def each_train(&block)
     raise "There are no trains on the station #{name}." if @trains.empty?
     @trains.each { |train| block.call(train) } if block_given?

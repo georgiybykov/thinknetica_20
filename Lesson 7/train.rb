@@ -40,12 +40,13 @@ class Train
   end
 
   def add_railcar(railcar)
-    return if !@speed.zero? || @type != railcar.type
+    return unless railcar.type == @type && @speed.zero?
+
     @railcars << railcar
   end
 
   def remove_railcar(railcar)
-    @railcars.delete(railcar) if @speed.zero? && @type == railcar.type
+    @railcars.delete(railcar) if @speed.zero? && railcar.type == @type
   end
 
   def take_route(route)
