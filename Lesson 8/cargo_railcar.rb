@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require_relative 'railcar'
 
 class CargoRailcar < RailCar
-
   attr_reader :overall_volume, :booked_volume
 
   def initialize(overall_volume = 95)

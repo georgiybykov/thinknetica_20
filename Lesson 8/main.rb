@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'pry'
 require_relative 'manufacturer'
 require_relative 'instance_counter'
@@ -12,7 +14,6 @@ require_relative 'passenger_railcar'
 require_relative 'cargo_railcar'
 
 class RailRoad
-
   def initialize
     @stations = []
     @trains = []
@@ -34,10 +35,10 @@ class RailRoad
     show_the_list_of_the_stations: 10,
     show_the_list_of_the_trains_for_the_station: 11,
     show_the_list_of_the_railcars_for_the_train: 12
-  }
+  }.freeze
 
   def start
-    puts %Q(
+    puts %(
       0. Exit
       1. Create new station
       2. Create new train
@@ -166,6 +167,7 @@ class RailRoad
     puts "You have chosen the train #{train.number}."
 
     train.remove_railcar(train.railcars.last) if train.railcars.count.positive?
+    puts 'The railcar had been hitched off the train.'
   end
 
   def railcar_load
@@ -177,7 +179,7 @@ class RailRoad
     train = @trains.find { |train| train.number == number } || return
     puts "You have chosen the train #{train.number}. The amount of railcars is: #{train.railcars.count}"
 
-    print 'Type here the number of railcar: '
+    print 'Type here the NUMBER of the railcar: '
     railcar_number = gets.chomp.to_i - 1
     loading_railcar = train.railcars[railcar_number]
 
@@ -204,19 +206,6 @@ class RailRoad
       puts "Vacant of places: #{railcar.vacant_places}."
     end
     puts('--' * 30)
-  end
-
-  def create_new_railcar_for(train)
-    case train.type
-    when 'cargo'
-      print 'Type railcar overall volume: '
-      railcar_volume = gets.chomp.to_i
-      CargoRailcar.new(railcar_volume)
-    when 'passenger'
-      print 'Type railcar amount of seats: '
-      amount_of_seats = gets.chomp.to_i
-      PassengerRailcar.new(amount_of_seats)
-    end
   end
 
   def create_a_route
@@ -248,11 +237,9 @@ class RailRoad
       @stations.each_with_index { |station, number| puts "#{number}. #{station.name}" }
       print 'Type the INDEX NUMBER of the station: '
       last_station = @stations[gets.chomp.to_i]
-      if last_station == first_station
-        puts 'This station already exists in the route.'
-      else
-        break
-      end
+      break unless last_station == first_station
+
+      puts 'This station already exists in the route.'
     end
     @routes << Route.new(first_station, last_station)
     puts "The route #{@routes.last.name} has been created."
@@ -349,6 +336,7 @@ class RailRoad
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
     train = @trains[gets.chomp.to_i]
     return if train.nil?
+
     puts "You have chosen the train #{train.number}."
 
     if train.route.nil?

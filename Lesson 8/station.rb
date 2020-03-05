@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require_relative 'instance_counter'
 require_relative 'validate'
 require_relative 'train'
 
 class Station
-
   include InstanceCounter
   include Validate
 
@@ -33,6 +34,7 @@ class Station
 
   def each_train(&block)
     raise "There are no trains on the station #{name}." if @trains.empty?
+
     @trains.each { |train| block.call(train) } if block_given?
   end
 

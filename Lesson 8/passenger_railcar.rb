@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require_relative 'railcar'
 
 class PassengerRailcar < RailCar
-
   attr_reader :amount_of_places, :booked_places
 
   def initialize(amount_of_places = 36)

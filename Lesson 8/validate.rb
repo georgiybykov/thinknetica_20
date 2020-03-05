@@ -1,9 +1,10 @@
-module Validate
+# frozen_string_literal: true
 
+module Validate
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 end

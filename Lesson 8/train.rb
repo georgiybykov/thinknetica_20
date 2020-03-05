@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'manufacturer'
 require_relative 'instance_counter'
 require_relative 'validate'
@@ -5,12 +7,11 @@ require_relative 'station'
 require_relative 'railcar'
 
 class Train
-
   include Manufacturer
   include InstanceCounter
   include Validate
 
-  NUMBER_FORMAT = /^[[a-z]\d]{3}+-*+[[a-z]\d]{2}$/i
+  NUMBER_FORMAT = /^[[a-z]\d]{3}+-*+[[a-z]\d]{2}$/i.freeze
 
   attr_accessor :number, :type
   attr_reader :railcars, :speed, :route
@@ -57,8 +58,9 @@ class Train
 
   def go_one_station_forward
     return if next_station.nil?
-    #@route.stations[@station_index].send_train(self)
-    #@route.stations[@station_index + 1].get_train(self)
+
+    # @route.stations[@station_index].send_train(self)
+    # @route.stations[@station_index + 1].get_train(self)
     current_station.send_train(self)
     next_station.get_train(self)
     @station_index += 1
@@ -66,8 +68,9 @@ class Train
 
   def go_one_station_back
     return if previous_station.nil?
-    #@route.stations[@station_index].send_train(self)
-    #@route.stations[@station_index - 1].get_train(self)
+
+    # @route.stations[@station_index].send_train(self)
+    # @route.stations[@station_index - 1].get_train(self)
     current_station.send_train(self)
     previous_station.get_train(self)
     @station_index -= 1
@@ -75,11 +78,13 @@ class Train
 
   def current_station
     return if @route.nil?
+
     @route.stations[@station_index]
   end
 
   def each_railcar
     raise "There are no railcars for the train #{number}." if @railcars.empty?
+
     @railcars.each { |railcar| yield(railcar) } if block_given?
   end
 
@@ -89,17 +94,21 @@ class Train
 
   def next_station
     return if @station_index == @route.stations.size - 1
+
     @route.stations[@station_index + 1]
   end
 
   def previous_station
-    return if @station_index == 0
+    return if @station_index.zero?
+
     @route.stations[@station_index - 1]
   end
 
   def validate!
     raise "Number can't be nil" if number.nil?
     raise "Type can't be blank" if type.empty?
-    raise "Number has invalid format. Expected: xxx-xx or xxxxx" if number !~ NUMBER_FORMAT
+    if number !~ NUMBER_FORMAT
+      raise 'Number has invalid format. Expected: xxx-xx or xxxxx'
+    end
   end
 end
