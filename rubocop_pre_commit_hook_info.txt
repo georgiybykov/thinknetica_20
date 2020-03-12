@@ -1,0 +1,15 @@
+Download file to the project folder:
+
+https://gist.github.com/palkan/d3ea6692569a218a8743
+
+
+Terminal commands:
+
+ln -s ../../rubocop_pre_commit_hook.rb .git/hooks/pre-commit
+ls -al .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit #=> abillity to switch on the file
+
+
+Turn on by hands:
+
+.git/hooks/pre-commit
