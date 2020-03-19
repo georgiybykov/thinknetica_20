@@ -184,7 +184,7 @@ class RailRoad
 
     print 'Type here the NUMBER of the railcar: '
     railcar_number = gets.chomp.to_i - 1
-    loading_railcar = train.railcars[railcar_number]
+    loading_railcar = train.railcars[railcar_number] || raise('Type correct NUMBER of the railcar')
 
     puts 'Type the volume you would like to load: '
     volume = gets.chomp.to_i if loading_railcar.type == 'cargo'
