@@ -133,10 +133,10 @@ class RailRoad
     puts 'What is the NUMBER of the train you would like to hitch the railcar on? '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
     number = gets.chomp
-    train = @trains.find { |train| train.number == number } || return
+    train = @trains.find { |train| train.number == number } || raise('Type correct NUMBER of the train')
     puts "You have chosen the train #{train.number}."
 
-    railcar = create_new_railcar_for(train) || raise 'An error with creating the railcar'
+    railcar = create_new_railcar_for(train) || raise('An error with creating the railcar')
     train.add_railcar(railcar)
     @railcars << railcar unless railcar.nil?
     puts 'The railcar has been successfully added.'
@@ -163,11 +163,14 @@ class RailRoad
     puts 'Type the NUMBER of the train. The list of available trains: '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
     number = gets.chomp
-    train = @trains.find { |train| train.number == number } || return
+    train = @trains.find { |train| train.number == number } || raise('Type correct NUMBER of the train')
     puts "You have chosen the train #{train.number}."
 
     train.remove_railcar(train.railcars.last) if train.railcars.count.positive?
     puts 'The railcar had been hitched off the train.'
+  rescue StandardError => e
+    puts e.message
+    retry
   end
 
   def railcar_load
@@ -176,7 +179,7 @@ class RailRoad
     puts 'Type the NUMBER of the train. The list of available trains: '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
     number = gets.chomp
-    train = @trains.find { |train| train.number == number } || return
+    train = @trains.find { |train| train.number == number } || raise('Type correct NUMBER of the train')
     puts "You have chosen the train #{train.number}. The amount of railcars is: #{train.railcars.count}"
 
     print 'Type here the NUMBER of the railcar: '
@@ -188,24 +191,10 @@ class RailRoad
 
     loading_railcar.type == 'cargo' ? loading_railcar.take_volume(volume) : loading_railcar.take_a_place
     puts 'Loading has been finished successfully.'
-    railcar_info(loading_railcar)
+    puts loading_railcar.info
   rescue RuntimeError => e
     puts e.message
     retry
-  end
-
-  def railcar_info(railcar)
-    puts('--' * 30)
-    if railcar.type == 'cargo'
-      puts "Overall volume: #{railcar.overall_volume}."
-      puts "Booked volume: #{railcar.booked_volume}."
-      puts "Available volume: #{railcar.available_volume}."
-    else
-      puts "Amount of places: #{railcar.amount_of_places}."
-      puts "Booked of places: #{railcar.booked_places}."
-      puts "Vacant of places: #{railcar.vacant_places}."
-    end
-    puts('--' * 30)
   end
 
   def create_a_route
@@ -289,7 +278,7 @@ class RailRoad
     end
     puts 'Type the INDEX NUMBER of the train to set train route. The list of available trains: '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
-    train = @trains[gets.chomp.to_i]
+    train = @trains[gets.chomp.to_i] || raise('You should choose correct INDEX NUMBER of the train')
     puts "You have chosen the train #{train.number}."
     if @routes.nil?
       puts 'There are no available routes.'
@@ -297,9 +286,12 @@ class RailRoad
     end
     puts 'Type the INDEX NUMBER of the route. The list of available routes: '
     @routes.each_with_index { |route, number| puts "#{number}. #{route.name}" }
-    route = @routes[gets.chomp.to_i]
+    route = @routes[gets.chomp.to_i] || raise('You should choose correct INDEX NUMBER of the route')
     train.take_route(route)
     puts 'The route for the train has been set.'
+  rescue StandardError => e
+    puts e.message
+    retry
   end
 
   def send_the_train_to_the_station
@@ -334,7 +326,7 @@ class RailRoad
     puts 'Move the train one station forward or back on the route'
     puts 'Choose the INDEX NUMBER of the train: '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
-    train = @trains[gets.chomp.to_i]
+    train = @trains[gets.chomp.to_i] || raise('Type correct INDEX NUMBER of the train')
     return if train.nil?
 
     puts "You have chosen the train #{train.number}."
@@ -353,6 +345,9 @@ class RailRoad
         puts "The train #{train.number} has gone to the previous station."
       end
     end
+  rescue StandardError => e
+    puts e.message
+    retry
   end
 
   def show_the_list_of_the_stations
@@ -379,10 +374,13 @@ class RailRoad
     puts 'Type the NUMBER of the train. The list of available trains: '
     @trains.each_with_index { |train, number| puts "#{number}. #{train.number}" }
     number = gets.chomp
-    train = @trains.find { |train| train.number == number } || return
+    train = @trains.find { |train| train.number == number } || raise('Type correct NUMBER of the train')
     puts "You have chosen the train #{train.number}."
     puts "The train #{train.number} has railcars: "
     train.each_railcar { |railcar| puts railcar.info }
+  rescue StandardError => e
+    puts e.message
+    retry
   end
 end
 
