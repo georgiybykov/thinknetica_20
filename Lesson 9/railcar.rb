@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'manufacturer'
+require_relative 'validation'
 require_relative 'train'
 
 class RailCar
   include Manufacturer
+  include Validation
 
   attr_reader :type
 

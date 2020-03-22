@@ -2,19 +2,22 @@
 
 require_relative 'manufacturer'
 require_relative 'instance_counter'
-require_relative 'validate'
+require_relative 'validation'
 require_relative 'station'
 require_relative 'railcar'
 
 class Train
   include Manufacturer
   include InstanceCounter
-  include Validate
+  include Validation
 
   NUMBER_FORMAT = /^[[a-z]\d]{3}+-*+[[a-z]\d]{2}$/i.freeze
 
   attr_accessor :number, :type
   attr_reader :railcars, :speed, :route
+
+  validate :number, :presence
+  validate :number, :format, NUMBER_FORMAT
 
   @@trains = {}
 
@@ -102,13 +105,5 @@ class Train
     return if @station_index.zero?
 
     @route.stations[@station_index - 1]
-  end
-
-  def validate!
-    raise "Number can't be nil" if number.nil?
-    raise "Type can't be blank" if type.empty?
-    if number !~ NUMBER_FORMAT
-      raise 'Number has invalid format. Expected: xxx-xx or xxxxx'
-    end
   end
 end

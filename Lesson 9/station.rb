@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
-require_relative 'validate'
+require_relative 'validation'
 require_relative 'train'
+require_relative 'accessors'
 
 class Station
   include InstanceCounter
-  include Validate
+  include Validation
+  extend Accessors
 
   attr_reader :name, :trains
+  attr_accessor_with_history :re
+
+  validate :name, :presence
+  validate :name, :type, String
 
   @@all_stations = []
 
@@ -40,10 +46,11 @@ class Station
 
   protected
 
-  attr_writer :name
-
   def validate!
-    raise "Station name can't be blank" if name.empty?
-    raise 'Name must not be longer than 25 symbols' if name.length > 25
+    super
+    raise 'The name of the station has to be at least 2 symbols' if name.length < 2
+    raise 'It is too long name of the station' if name.length > 20
+
+    true
   end
 end

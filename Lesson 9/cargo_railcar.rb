@@ -1,9 +1,15 @@
 # frozen_string_literal: true
 
+require_relative 'validation'
 require_relative 'railcar'
 
 class CargoRailcar < RailCar
+  include Validation
+
   attr_reader :overall_volume, :booked_volume
+
+  validate :overall_volume, :presence
+  validate :overall_volume, :type, Integer
 
   def initialize(overall_volume = 95)
     @type = 'cargo'
@@ -21,6 +27,8 @@ class CargoRailcar < RailCar
   def available_volume
     @overall_volume - @booked_volume
   end
+
+  protected
 
   def validate!
     raise 'Overall volume must be greater than 0' if overall_volume.zero?
