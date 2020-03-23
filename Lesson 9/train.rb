@@ -2,17 +2,20 @@
 
 require_relative 'manufacturer'
 require_relative 'instance_counter'
+require_relative 'accessors'
 require_relative 'validation'
 require_relative 'station'
 require_relative 'railcar'
 
 class Train
+  extend Accessors
   include Manufacturer
   include InstanceCounter
   include Validation
 
   NUMBER_FORMAT = /^[[a-z]\d]{3}+-*+[[a-z]\d]{2}$/i.freeze
 
+  attr_accessor_with_history :railcars
   attr_accessor :number, :type
   attr_reader :railcars, :speed, :route
 

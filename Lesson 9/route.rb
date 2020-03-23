@@ -2,14 +2,18 @@
 
 require_relative 'station'
 require_relative 'instance_counter'
+require_relative 'accessors'
 require_relative 'validation'
 
 class Route
+  extend Accessors
   include InstanceCounter
   include Validation
 
+  attr_accessor_with_history :stations
   attr_reader :stations
 
+  validate :stations, :presence
   validate :stations, :type, Array
 
   def initialize(first_station, last_station)

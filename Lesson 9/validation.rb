@@ -18,7 +18,7 @@ module Validation
       define_method(validation_name) do
         var_name = "@#{name}".to_sym
         value = instance_variable_get(var_name)
-        raise "#{name.capitalize} field can't be blank/empty!" if value.nil? || value.empty?
+        raise "#{name.capitalize} field can't be blank/empty!" if value.nil? || value == ''
 
         return true
       end

@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
+require_relative 'accessors'
 require_relative 'validation'
 require_relative 'train'
-require_relative 'accessors'
 
 class Station
+  extend Accessors
   include InstanceCounter
   include Validation
-  extend Accessors
 
+  attr_accessor_with_history :trains
   attr_reader :name, :trains
-  attr_accessor_with_history :re
+
+  strong_attr_accessor :test_var, TestClass
 
   validate :name, :presence
   validate :name, :type, String
