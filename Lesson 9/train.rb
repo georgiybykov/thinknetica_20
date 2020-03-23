@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'manufacturer'
-require_relative 'instance_counter'
-require_relative 'accessors'
-require_relative 'validation'
+require_relative 'modules/manufacturer'
+require_relative 'modules/instance_counter'
+require_relative 'modules/accessors'
+require_relative 'modules/validation'
 require_relative 'station'
 require_relative 'railcar'
 

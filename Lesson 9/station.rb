@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'instance_counter'
-require_relative 'accessors'
-require_relative 'validation'
+require_relative 'modules/instance_counter'
+require_relative 'modules/accessors'
+require_relative 'modules/validation'
 require_relative 'train'
 
 class Station
@@ -13,7 +13,7 @@ class Station
   attr_accessor_with_history :trains
   attr_reader :name, :trains
 
-  strong_attr_accessor :test_var, TestClass
+  #strong_attr_accessor :test_var, TestClass
 
   validate :name, :presence
   validate :name, :type, String

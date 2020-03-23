@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # README ====>>>> TO RUN THIS FILE YOU HAVE TO UNCOMMENT 16th LINE IN station.rb
+# IF YOU WOULD LIKE TO TEST strong_attr_accessor
 
 # for strong_attr_accessor in station.rb
 class TestClass; end
