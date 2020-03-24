@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'pry'
+require 'colorize' # colorized strings in menu
 require_relative 'station'
 require_relative 'route'
 require_relative 'train'
@@ -35,6 +36,8 @@ class RailRoad
   }.freeze
 
   def start
+    puts 'RAILROAD PROJECT'.center(80).colorize(:red).colorize(:background => :light_white)
+
     puts %(
       0. Exit
       1. Create new station
@@ -49,7 +52,7 @@ class RailRoad
       10. Show the list of the stations
       11. Show the list of the trains for the station
       12. Show the list of the railcars for the train
-    )
+    ).colorize(:black).colorize(:background => :light_white)
 
     loop do
       print 'Type here the action number: '
