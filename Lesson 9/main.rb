@@ -199,7 +199,12 @@ class RailRoad
 
   def create_a_route
     puts 'Menu to create a route'
-    puts 'Type number for: 1 - Create new route; 2 - Add station to the route; 3 - Remove station from the route'
+    puts %(
+      Type number for:
+        1 - Create new route
+        2 - Add station to the route
+        3 - Remove station from the route
+    )
     choice = gets.chomp.to_i
     case choice
     when 1
@@ -334,7 +339,11 @@ class RailRoad
     if train.route.nil?
       puts "The route had not been set for the train #{train.number}."
     else
-      puts 'Type your choise: 1 - move the train one station forward; 2 - move the train one station back'
+      puts %(
+        Type your choise:
+          1 - Move the train one station forward
+          2 - Move the train one station back
+      )
       choise = gets.chomp.to_i
       case choise
       when 1
