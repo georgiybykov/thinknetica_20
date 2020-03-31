@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'pry'
+# require 'pry'
 require 'colorize' # colorized strings in menu
 require_relative 'station'
 require_relative 'route'
@@ -12,13 +12,6 @@ require_relative 'passenger_railcar'
 require_relative 'cargo_railcar'
 
 class RailRoad
-  def initialize
-    @stations = []
-    @trains = []
-    @routes = []
-    @railcars = []
-  end
-
   ACTIONS = {
     exit: 0,
     create_new_station: 1,
@@ -34,6 +27,13 @@ class RailRoad
     show_the_list_of_the_trains_for_the_station: 11,
     show_the_list_of_the_railcars_for_the_train: 12
   }.freeze
+
+  def initialize
+    @stations = []
+    @trains = []
+    @routes = []
+    @railcars = []
+  end
 
   def start
     puts 'RAILROAD PROJECT'.center(80).colorize(:red).colorize(:background => :light_white)
