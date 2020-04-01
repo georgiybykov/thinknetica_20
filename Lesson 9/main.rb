@@ -36,7 +36,7 @@ class RailRoad
   end
 
   def start
-    puts 'RAILROAD PROJECT'.center(80).colorize(:red).colorize(:background => :light_white)
+    puts 'RAILWAY ROAD PROJECT'.center(80).colorize(:red).colorize(:background => :light_white)
 
     puts %(
       0. Exit
