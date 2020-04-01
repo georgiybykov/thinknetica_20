@@ -29,4 +29,4 @@ Install it first by:
 
     `gem install colorize`
 
-`Note: You may need to use sudo to install gems`
+`Note:` You may need to use `sudo` to `gem install <name_of_the_gemfile>`
