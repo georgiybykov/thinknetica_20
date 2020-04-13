@@ -13,7 +13,7 @@ class Station
   attr_accessor_with_history :trains
   attr_reader :name, :trains
 
-  #strong_attr_accessor :test_var, TestClass
+  # strong_attr_accessor :test_var, TestClass
 
   validate :name, :presence
   validate :name, :type, String

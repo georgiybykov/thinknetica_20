@@ -19,14 +19,7 @@
                         11. Show the list of the trains for the station
                         12. Show the list of the railcars for the train
 
-To start the program in terminal:
+To start the program type the command in terminal:
 
-          1) `bundle install`
-          2) `ruby main.rb`
+        `ruby main.rb`
 
-If you catch an exception, it's because of `gem 'colorize'`.
-Install it first by:
-
-    `gem install colorize`
-
-`Note:` You may need to use `sudo` to `gem install <name_of_the_gemfile>`
