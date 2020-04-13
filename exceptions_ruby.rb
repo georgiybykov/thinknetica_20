@@ -1,21 +1,28 @@
-=begin
-  begin
-    puts 'Before exception'
-    Math.sqrt(-1)
-  rescue StandardError => e
-    puts "Error!!!"
-    raise
-    puts e.backtrace
-  rescue NoMemoryError => e
-    puts "No memory!!!"
-  end
+# Ruby exceptions and exceptions handling
 
-  puts 'After exception'
+# --------------------------------------
+
+=begin
+
+begin
+  puts 'Before exception'
+  Math.sqrt(-1)
+rescue StandardError => e
+  puts "Error!!!"
+  raise
+  puts e.backtrace
+rescue NoMemoryError => e
+  puts "No memory!!!"
+end
+
+puts 'After exception'
+
 =end
 
-#--------------------------------------
+# --------------------------------------
 
 =begin
+
 def method_with_error
   # ...
   raise ArgumentError, "Oh no!"
@@ -28,11 +35,13 @@ rescue RuntimeError => e
 end
 
 puts "After exception"
+
 =end
 
-#--------------------------------------
+# --------------------------------------
 
 =begin
+
 def sqrt(value)
   sqrt = Math.sqrt(value)
   puts sqrt
@@ -41,10 +50,10 @@ rescue StandardError
 end
 
 sqrt(-1)
+
 =end
 
-#--------------------------------------
-
+# --------------------------------------
 
 def connect_to_wikipedia
   # ...
@@ -57,7 +66,7 @@ begin
 rescue RuntimeError
   attempt += 1
   retry if attempt < 3
-  #puts 'Check your internet connection!'
+  # puts 'Check your internet connection!'
 ensure
   puts "There was #{attempt} attempts."
 end
