@@ -1,6 +1,6 @@
 # Thinknetica
 
-The final `Railway Road Project` is located in the `folder 'Lesson 9'` (that project starts from the folder 'Lesson 3').
+The final `Railway Road Project` is located in the `folder 'Lesson 9'` (project starts from the 'Lesson 3' folder).	
 
 
-The other folders and files contain the exercises were done during the `Thinknetica Web-Development Course`.
+Other folders and files contain exercises that were completed throughout the course of `Thinknetica Web-Development`.
