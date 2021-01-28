@@ -1,0 +1,6 @@
+# Local IDE configurations
+.idea/*
+/rack-app/.idea/*
+
+# The directory for development logs.
+/rack-app/log
