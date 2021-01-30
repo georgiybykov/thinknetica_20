@@ -3,6 +3,7 @@
 class App
   def call(env)
     perform_request
+
     [status, headers, body]
   end
 

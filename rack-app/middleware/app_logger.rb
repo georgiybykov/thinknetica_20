@@ -10,6 +10,7 @@ class AppLogger
 
   def call(env)
     logger.info(env)
+
     app.call(env)
   end
 
